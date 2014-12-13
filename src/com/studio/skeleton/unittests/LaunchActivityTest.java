@@ -11,6 +11,7 @@ import com.studio.skeleton.R;
 public class LaunchActivityTest extends ActivityUnitTestCase<MainActivity> {
 
     private Intent mLaunchIntent;
+    private Button mSendButton;
 
     public LaunchActivityTest() {
         super(MainActivity.class);
@@ -21,23 +22,19 @@ public class LaunchActivityTest extends ActivityUnitTestCase<MainActivity> {
         super.setUp();
         mLaunchIntent = new Intent(getInstrumentation().getTargetContext(),
                 MainActivity.class);
+        startActivity(mLaunchIntent, null, null);
+        mSendButton = (Button) getActivity().findViewById(R.id.button_send);
     }
 
     @MediumTest
     public void testPreconditions() {
-        startActivity(mLaunchIntent, null, null);
-        final Button sendButton = (Button) getActivity().findViewById(
-                R.id.button_send);
         assertNotNull("mLaunchActivity is null", getActivity());
-        assertNotNull("sendButton is null", sendButton);
+        assertNotNull("sendButton is null", mSendButton);
     }
 
     @MediumTest
     public void testNextActivityWasLaunchedWithIntent() {
-        startActivity(mLaunchIntent, null, null);
-        final Button sendButton = (Button) getActivity().findViewById(
-                R.id.button_send);
-        sendButton.performClick();
+        mSendButton.performClick();
 
         final Intent launchIntent = getStartedActivityIntent();
         assertNotNull("Intent was null", launchIntent);
